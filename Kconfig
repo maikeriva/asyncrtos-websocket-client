@@ -1,0 +1,90 @@
+menu "AOS Websocket client"
+
+    choice AOS_WS_CLIENT_LOG
+        bool "Default log verbosity"
+        default AOS_WS_CLIENT_LOG_INFO
+        help
+            Specify how much output to see in logs by default.
+            You can set lower verbosity level at runtime using
+            esp_log_level_set function.
+
+            Note that this setting limits which log statements
+            are compiled into the program. So setting this to, say,
+            "Warning" would mean that changing log level to "Debug"
+            at runtime will not be possible.
+
+        config AOS_WS_CLIENT_LOG_NONE
+            bool "No output"
+        config AOS_WS_CLIENT_LOG_ERROR
+            bool "Error"
+        config AOS_WS_CLIENT_LOG_WARNING
+            bool "Warning"
+        config AOS_WS_CLIENT_LOG_INFO
+            bool "Info"
+        config AOS_WS_CLIENT_LOG_DEBUG
+            bool "Debug"
+        config AOS_WS_CLIENT_LOG_VERBOSE
+            bool "Verbose"
+    endchoice
+
+    menu "Task"
+
+        config AOS_WS_CLIENT_TASK_QUEUESIZE_DEFAULT
+            int "Queue size"
+            default 3
+            help
+                A higher size prevents blocking when multiple async
+                requests are processed at the expense of memory consumption.
+
+        config AOS_WS_CLIENT_TASK_STACKSIZE_DEFAULT
+            int "Stack size"
+            default 4096
+            help
+                Default is calibrated on log output set to INFO. A bigger stack
+                may be necessary when setting more verbose log levels.
+
+        config AOS_WS_CLIENT_TASK_PRIORITY_DEFAULT
+            int "Priority"
+            default 1
+            help
+                Ensure this is set in coordination with other system tasks.
+
+    endmenu
+
+    config AOS_WS_CLIENT_BUFFERSIZE_DEFAULT
+        int "Buffer size"
+        default 512
+        help
+            Buffer size for received data.
+
+    config AOS_WS_CLIENT_POLLINGTIMEOUTMS_DEFAULT
+        int "Poll timeout (ms)"
+        default 100
+        help
+            Poll timeout for received data.
+
+    config AOS_WS_CLIENT_SENDTIMEOUTMS_DEFAULT
+        int "Send timeout (ms)"
+        default 3000
+        help
+            Timeout for sending data.
+
+    config AOS_WS_CLIENT_CONNECTIONATTEMPTS_DEFAULT
+        int "Connection attempts"
+        default 3
+        help
+            Conenction attempts before giving up.
+
+    config AOS_WS_CLIENT_RECONNECTIONATTEMPTS_DEFAULT
+        int "Reconnection attempts"
+        default 4294967295
+        help
+            Conenction attempts before giving up.
+
+    config AOS_WS_CLIENT_RETRYINTERVALMS_DEFAULT
+        int "Retry interval (ms)"
+        default 3000
+        help
+            Interval between connection/reconnection attempts.
+
+endmenu
